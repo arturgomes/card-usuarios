@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid';
 
 import './App.css'
 import Card from './components/card';
+import api from './services/api';
 
 interface User {
   id: string;
@@ -25,19 +26,19 @@ function App() {
   const [users, setUsers] = useState([
     {
       id: "98cc7e2d-dd51-45ec-8b6e-d5ba879d0728",
-      nome: "Ana Ferreira",
+      nome: "Gabriela Tavares",
       profissao: "Desenvolvedor Back-end",
       likes: 8792,
       messages: 302,
       shares: 273,
       telefone: "(64) 51955-2455",
-      nascimento: "1985-7-28",
-      cidade: "Recife",
-      estado: "RJ",
-      altura: "1,96m",
-      imc: "47.12",
-      iniciais: "AF",
-      peso: 181
+      nascimento: "1998-8-11",
+      cidade: "São Paulo",
+      estado: "SP",
+      altura: "1,65m",
+      imc: "25",
+      iniciais: "GT",
+      peso: 62
     },
     {
       id: "ebdbccf3-d8a8-47f0-873d-8d32efbd7178",
@@ -184,6 +185,23 @@ function App() {
       peso: 69
     },
   ]);
+  useEffect(() => {
+    return () => api.get('/users').then(response => setUsers(response.data))
+
+  }, [])
+
+
+  // endpoint para listar todos os usuários
+  // app.get('/users');
+
+  // endpoint para listar usuário por ID
+  // app.get('/users/id/:id');
+
+  // endpoint para listar usuário por nome
+  // api.get('/users/nome');
+
+  // endpoint para listar usuários com IMC acima de um valor específico
+  // api.get('/users/imc')
 
   return (
     <div className="cards">
