@@ -186,10 +186,19 @@ function App() {
     },
   ]);
   useEffect(() => {
-    return () => api.get('/users').then(response => setUsers(response.data))
+    function getFromApi() {
+      api.get('/users').then(response => setUsers(response.data))
+    }
+    getFromApi()
 
   }, [])
+  const [searchTerm, setSearchTerm] = useState("");
 
+  const filteredUsers = users.filter(
+    (user) =>
+      user.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.profissao.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // endpoint para listar todos os usuários
   // app.get('/users');
@@ -204,10 +213,19 @@ function App() {
   // api.get('/users/imc')
 
   return (
-    <div className="cards">
-      {users.map((user: User) => (
-        <Card key={user.id} user={user} />
-      ))}
+    <div className="container">
+      <input
+        type="text"
+        placeholder="Buscar por nome ou profissão"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      <div className="cards">
+
+        {filteredUsers.map((user: User) => (
+          <Card key={user.id} user={user} />
+        ))}
+      </div>
     </div>
   );
 }
